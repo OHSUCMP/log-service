@@ -1,5 +1,6 @@
 package edu.ohsu.cmp.logservice.security;
 
+import edu.ohsu.cmp.logservice.Constants;
 import io.micrometer.common.util.StringUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -22,18 +23,19 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        boolean isAuthorized = false;
+        String authorizedClientAppName = null;
 
         String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (StringUtils.isNotBlank(authorization)) {
             if (authorization.startsWith(BEARER_PREFIX)) {
                 String clientToken = authorization.substring(BEARER_PREFIX.length());
-                isAuthorized = security.hasAuthorizedClient(clientToken);
+                authorizedClientAppName = security.getAuthorizedClientAppName(clientToken);
             }
         }
 
-        if (isAuthorized) {
+        if (authorizedClientAppName != null) {
             logger.info("OK : \"{}\"", authorization);
+            request.setAttribute(Constants.CLIENT_APP_NAME_ATTRIBUTE, authorizedClientAppName);
             return true;
 
         } else {

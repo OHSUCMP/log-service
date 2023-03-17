@@ -1,7 +1,9 @@
 package edu.ohsu.cmp.logservice.controller;
 
+import edu.ohsu.cmp.logservice.Constants;
 import edu.ohsu.cmp.logservice.model.LogRequest;
 import edu.ohsu.cmp.logservice.service.LogService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,13 +25,17 @@ public class LogController {
     private LogService logService;
 
     @PostMapping(value = "do-log", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> doLog(HttpSession session,
+    public ResponseEntity<String> doLog(HttpServletRequest request,
+                                        HttpSession session,
                                         @RequestBody LogRequest logRequest) {
 
         logger.info("executing log request for session " + session.getId());
 
+        String clientAppName = String.valueOf(request.getAttribute(Constants.CLIENT_APP_NAME_ATTRIBUTE));
+
         try {
             logService.doLog(
+                    clientAppName,
                     logRequest.getLogLevel(),
                     logRequest.getEvent(),
                     logRequest.getPage(),

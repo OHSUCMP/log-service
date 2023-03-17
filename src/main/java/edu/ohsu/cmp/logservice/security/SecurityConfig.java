@@ -19,9 +19,9 @@ public class SecurityConfig {
         this.authorizedClients = authorizedClients;
     }
 
-    public boolean hasAuthorizedClient(String clientToken) {
-        return StringUtils.isNotBlank(clientToken) &&
-                authorizedClients != null &&
-                authorizedClients.containsKey(clientToken);
+    public String getAuthorizedClientAppName(String clientToken) {
+        return StringUtils.isNotBlank(clientToken) && authorizedClients != null ?
+                authorizedClients.get(clientToken) :
+                null;
     }
 }
