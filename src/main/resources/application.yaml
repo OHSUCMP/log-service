@@ -1,0 +1,7 @@
+server:
+  port: 8085
+
+security:
+  authorizedClients:
+    dd9761de-dc5e-4132-a159-51421fc43e07: Test Authorized App 1
+    65b141e2-c9f3-4193-b16e-568ca84da0ec: Test Authorized App 2
