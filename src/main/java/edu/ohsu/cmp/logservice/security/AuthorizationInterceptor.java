@@ -34,12 +34,12 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
         }
 
         if (authorizedClientAppName != null) {
-            logger.info("OK : \"{}\"", authorization);
+            logger.info("OK : {} from {}", authorizedClientAppName, request.getRemoteAddr());
             request.setAttribute(Constants.CLIENT_APP_NAME_ATTRIBUTE, authorizedClientAppName);
             return true;
 
         } else {
-            logger.warn("Unauthorized : \"{}\" ", authorization);
+            logger.warn("Unauthorized : {} from {}", authorization, request.getRemoteAddr());
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             return false;
         }
