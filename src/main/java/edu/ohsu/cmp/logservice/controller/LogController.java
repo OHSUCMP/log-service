@@ -39,6 +39,7 @@ public class LogController {
 
         try {
             logService.doLog(
+                    session.getId(),
                     clientAppName,
                     logRequest.getLogLevel(),
                     logRequest.getEvent(),
