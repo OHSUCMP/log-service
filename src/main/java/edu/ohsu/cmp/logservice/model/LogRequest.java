@@ -9,6 +9,7 @@ public class LogRequest {
     public static final String LEVEL_WARN = "warn";
     public static final String LEVEL_INFO = "info";
     public static final String LEVEL_DEBUG = "debug";
+    public static final String LEVEL_TRACE = "trace";
 
     private String level;       // ERROR, WARN, INFO, DEBUG
     private String event;       // the WHAT: login, logout, someButtonClick, somethingElse, etc.
@@ -39,6 +40,7 @@ public class LogRequest {
         else if (LEVEL_WARN.equalsIgnoreCase(level)) return Level.WARN;
         else if (LEVEL_INFO.equalsIgnoreCase(level)) return Level.INFO;
         else if (LEVEL_DEBUG.equalsIgnoreCase(level)) return Level.DEBUG;
+        else if (LEVEL_TRACE.equalsIgnoreCase(level)) return Level.TRACE;
         else throw new CaseNotHandledException("invalid level: " + level);
     }
 
