@@ -11,6 +11,7 @@ public class LogRequest {
     public static final String LEVEL_DEBUG = "debug";
     public static final String LEVEL_TRACE = "trace";
 
+    private String sessionId;   // session identifier
     private String level;       // ERROR, WARN, INFO, DEBUG
     private String event;       // the WHAT: login, logout, someButtonClick, somethingElse, etc.
     private String page;        // the WHERE: Home, Vitals, Questionnaire, some-html-page.html, etc.
@@ -19,11 +20,20 @@ public class LogRequest {
     @Override
     public String toString() {
         return "LogRequest{" +
-                "level='" + level + '\'' +
+                "sessionId='" + sessionId + '\'' +
+                ", level='" + level + '\'' +
                 ", event='" + event + '\'' +
                 ", page='" + page + '\'' +
                 ", message='" + message + '\'' +
                 '}';
+    }
+
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
     }
 
     public String getLevel() {
