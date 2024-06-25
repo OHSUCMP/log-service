@@ -10,10 +10,10 @@ import org.springframework.stereotype.Service;
 public class LogService {
     private final Logger remoteLogger = LoggerFactory.getLogger("REMOTE");
 
-    public void doLog(String sessionId, String clientAppName, Level level, String event, String page, String message) {
-        remoteLogger.atLevel(level).log("sessionId={}, clientApp={}, event={}, page={}, message={}",
-                    sessionId,
+    public void doLog(String clientAppName, String sessionId, Level level, String event, String page, String message) {
+        remoteLogger.atLevel(level).log("clientApp={}, sessionId={}, event={}, page={}, message={}",
                     clientAppName,
+                    sessionId,
                     event,
                     page,
                     message);
