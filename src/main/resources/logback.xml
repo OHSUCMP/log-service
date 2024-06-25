@@ -12,9 +12,9 @@
     </appender>
 
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logservice.log</file>
+        <file>log/log-service.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>logservice.%d{yyyy-MM-dd}.log.zip</fileNamePattern>
+            <fileNamePattern>log/archive/%d{yyyy/MM, aux}/log-service.%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>10</maxHistory>
             <totalSizeCap>1GB</totalSizeCap>
         </rollingPolicy>
