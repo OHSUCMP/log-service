@@ -3,10 +3,12 @@ package edu.ohsu.cmp.logservice.controller;
 import edu.ohsu.cmp.logservice.Constants;
 import edu.ohsu.cmp.logservice.model.LogRequest;
 import edu.ohsu.cmp.logservice.service.LogService;
+import io.micrometer.common.util.StringUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.event.Level;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.regex.Pattern;
 
 @Controller
 @RequestMapping("/log")
@@ -40,11 +44,11 @@ public class LogController {
         try {
             logService.doLog(
                     clientAppName,
-                    logRequest.getSessionId(),
+                    sanitize(logRequest.getSessionId(), 50),
                     logRequest.getLogLevel(),
-                    logRequest.getEvent(),
-                    logRequest.getPage(),
-                    logRequest.getMessage()
+                    sanitize(logRequest.getEvent(), 50),
+                    sanitize(logRequest.getPage(), 50),
+                    sanitize(logRequest.getMessage(), 1000)
             );
             return new ResponseEntity<>(HttpStatus.OK);
 
@@ -55,5 +59,21 @@ public class LogController {
             }
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    private static final Pattern SANITIZE_PATTERN = Pattern.compile("[^a-zA-Z0-9 ():.-]");
+    private String sanitize(String s, int maxLength) {
+        if (StringUtils.isEmpty(s)) return s;
+
+        String sanitized = SANITIZE_PATTERN.matcher(s).replaceAll("?");
+        if (sanitized.length() > maxLength) {
+            sanitized = sanitized.substring(0, maxLength - 1) + " (truncated)";
+        }
+
+        if ( ! sanitized.equals(s) ) {
+            logger.debug("sanitized: \"" + sanitized + "\"");
+        }
+
+        return sanitized;
     }
 }
