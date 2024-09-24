@@ -13,9 +13,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import java.util.regex.Pattern;
+
 @Component
 public class AuthorizationInterceptor implements HandlerInterceptor {
     private static final String BEARER_PREFIX = "Bearer ";
+    private static final Pattern AUTHORIZATION_PATTERN = Pattern.compile("^" + BEARER_PREFIX + "[a-zA-Z0-9-]+$");
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -32,12 +35,10 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if (StringUtils.isNotBlank(authorization)) {
-            if (authorization.startsWith(BEARER_PREFIX)) {
-                String clientToken = authorization.substring(BEARER_PREFIX.length());
-                authorizedClientAppName = security.getAuthorizedClientAppName(clientToken);
-            }
+        if (AUTHORIZATION_PATTERN.matcher(request.getHeader(HttpHeaders.AUTHORIZATION)).matches()) {
+            String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
+            String clientToken = authorization.substring(BEARER_PREFIX.length());
+            authorizedClientAppName = security.getAuthorizedClientAppName(clientToken);
         }
 
         if (authorizedClientAppName != null) {
@@ -46,7 +47,7 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
             return true;
 
         } else {
-            logger.warn("Unauthorized : {} from {}", authorization, request.getRemoteAddr());
+            logger.warn("Unauthorized : from {}", request.getRemoteAddr());
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             return false;
         }
