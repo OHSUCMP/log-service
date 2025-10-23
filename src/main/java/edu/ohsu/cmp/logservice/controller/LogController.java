@@ -60,7 +60,7 @@ public class LogController {
         }
     }
 
-    private static final Pattern SANITIZE_PATTERN = Pattern.compile("[^a-zA-Z0-9 ():.-]");
+    private static final Pattern SANITIZE_PATTERN = Pattern.compile("[^a-zA-Z0-9 ()\\[\\]{}:.,='\"\\\\/_-]");
     private String sanitize(String s, int maxLength) {
         if (StringUtils.isEmpty(s)) return s;
 

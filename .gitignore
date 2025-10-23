@@ -35,3 +35,6 @@ build/
 log/**
 *.log
 *.zip
+
+### ignore local configurations ###
+local-config/
