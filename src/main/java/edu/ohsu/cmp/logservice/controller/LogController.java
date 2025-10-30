@@ -45,6 +45,7 @@ public class LogController {
                     clientAppName,
                     sanitize(logRequest.getSessionId(), 50),
                     logRequest.getLogLevel(),
+                    sanitize(logRequest.getCredentials(), 100),
                     sanitize(logRequest.getEvent(), 50),
                     sanitize(logRequest.getPage(), 50),
                     sanitize(logRequest.getMessage(), 1000)

@@ -13,6 +13,7 @@ public class LogRequest {
 
     private String sessionId;   // session identifier
     private String level;       // ERROR, WARN, INFO, DEBUG
+    private String credentials; // information about who is making the request
     private String event;       // the WHAT: login, logout, someButtonClick, somethingElse, etc.
     private String page;        // the WHERE: Home, Vitals, Questionnaire, some-html-page.html, etc.
     private String message;     // "user logged in", "something went wrong", etc.
@@ -22,6 +23,7 @@ public class LogRequest {
         return "LogRequest{" +
                 "sessionId='" + sessionId + '\'' +
                 ", level='" + level + '\'' +
+                ", credentials='" + credentials + '\'' +
                 ", event='" + event + '\'' +
                 ", page='" + page + '\'' +
                 ", message='" + message + '\'' +
@@ -52,6 +54,14 @@ public class LogRequest {
         else if (LEVEL_DEBUG.equalsIgnoreCase(level)) return Level.DEBUG;
         else if (LEVEL_TRACE.equalsIgnoreCase(level)) return Level.TRACE;
         else throw new CaseNotHandledException("invalid level: " + level);
+    }
+
+    public String getCredentials() {
+        return credentials;
+    }
+
+    public void setCredentials(String credentials) {
+        this.credentials = credentials;
     }
 
     public String getEvent() {
