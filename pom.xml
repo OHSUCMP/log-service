@@ -10,7 +10,7 @@
     </parent>
     <groupId>edu.ohsu.cmp</groupId>
     <artifactId>log-service</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1-SNAPSHOT</version>
     <name>log-service</name>
     <description>log-service</description>
     <properties>
