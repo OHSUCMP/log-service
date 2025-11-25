@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,21 @@ import java.util.regex.Pattern;
 @RequestMapping("/log")
 public class LogController {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    @Value("${logging.sessionId.maxLength:50}")
+    private Integer maxSessionIdLength;
+
+    @Value("${logging.credentials.maxLength:250}")
+    private Integer maxCredentialsLength;
+
+    @Value("${logging.event.maxLength:50}")
+    private Integer maxEventLength;
+
+    @Value("${logging.page.maxLength:50}")
+    private Integer maxPageLength;
+
+    @Value("${logging.message.maxLength:1000}")
+    private Integer maxMessageLength;
 
     @Autowired
     private LogService logService;
@@ -43,12 +59,12 @@ public class LogController {
         try {
             logService.doLog(
                     clientAppName,
-                    sanitize(logRequest.getSessionId(), 50),
+                    sanitize(logRequest.getSessionId(), maxSessionIdLength),
                     logRequest.getLogLevel(),
-                    sanitize(logRequest.getCredentials(), 250),
-                    sanitize(logRequest.getEvent(), 50),
-                    sanitize(logRequest.getPage(), 50),
-                    sanitize(logRequest.getMessage(), 1000)
+                    sanitize(logRequest.getCredentials(), maxCredentialsLength),
+                    sanitize(logRequest.getEvent(), maxEventLength),
+                    sanitize(logRequest.getPage(), maxPageLength),
+                    sanitize(logRequest.getMessage(), maxMessageLength)
             );
             return new ResponseEntity<>(HttpStatus.OK);
 
