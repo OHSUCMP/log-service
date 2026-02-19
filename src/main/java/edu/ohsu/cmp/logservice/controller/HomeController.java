@@ -9,6 +9,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class HomeController {
     @CrossOrigin
+    @GetMapping(value = "")
+    public ResponseEntity<String> home() {
+        return new ResponseEntity<>("This is the Log Service", HttpStatus.OK);
+    }
+
+    @CrossOrigin
     @GetMapping(value = "status")
     public ResponseEntity<String> status() {
         return new ResponseEntity<>("Service is running.", HttpStatus.OK);

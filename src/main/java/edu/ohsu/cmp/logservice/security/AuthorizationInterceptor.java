@@ -32,7 +32,7 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
             // the browser, it's unrealistic to try to set the Authorization header on these calls
             return true;
 
-        } else if (StringUtils.equals(request.getServletPath(), "/status")) {
+        } else if (StringUtils.equals(request.getServletPath(), "/") ||StringUtils.equals(request.getServletPath(), "/status")) {
             // this is the only endpoint that doesn't require authorization
             return true;
         }
